@@ -1,4 +1,7 @@
 Welcome
 
-Run on node
+Run on terminal/bash command prompt
+Make sure `node` is installed
+
 `node readbook`
+

@@ -23,17 +23,45 @@ async function write(file, text) {
   });
 }
 
-async function main() {
-  const excluded = await read(EX_WORDS);
-  const firstContent = await read(FILE1);
-  const secondContent = await read(FILE2);
+function processPages(sortedWords, page1, page2) {
+  const outputObj = sortedWords.map((word, i) => {
+    let str = "";
+    if (hasWord(word, page1)) {
+      str = "1";
+    }
+    if (hasWord(word, page2)) {
+      str += str ? ",2" : "2";
+    }
+    str = str ? str : "0";
+    return `${word}: ${str}`;
+  });
+  return outputObj;
+}
 
-  await write(OUTPUTFILE, "Is this an awesome app? Sure it is!");
+function hasWord(word, page) {
+  return page.includes(word);
+}
+
+async function main() {
+  const excludedWords = await read(EX_WORDS);
+  const pageOne = await read(FILE1);
+  const pageTwo = await read(FILE2);
+
+  console.log(excludedWords);
+  const axedWordsArr = excludedWords.split(",");
+  const sortedWords = axedWordsArr.sort((a, b) => (a > b ? 1 : -1));
+  console.log(sortedWords);
+
+  const outputStr = processPages(sortedWords, pageOne, pageTwo);
+
+  console.log(`This is the output -> ${outputStr}`);
+
+  await write(OUTPUTFILE, outputStr);
 
   const updatedContent = await read(OUTPUTFILE);
-  console.log(updatedContent);
-  console.log(firstContent);
-  console.log(secondContent);
+  console.log(`Woohhhooooo - ${updatedContent}`);
+  // console.log(pageOne);
+  // console.log(pageTwo);
 }
 
 main();
