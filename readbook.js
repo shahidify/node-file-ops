@@ -24,7 +24,7 @@ async function write(file, text) {
 }
 
 function processPages(sortedWords, page1, page2) {
-  const outputObj = sortedWords.map((word, i) => {
+  const outputObj = sortedWords.map(word => {
     let str = "";
     if (hasWord(word, page1)) {
       str = "1";
@@ -33,7 +33,7 @@ function processPages(sortedWords, page1, page2) {
       str += str ? ",2" : "2";
     }
     str = str ? str : "0";
-    return `${word}: ${str}`;
+    return `\n ${word}: ${str}`;
   });
   return outputObj;
 }
